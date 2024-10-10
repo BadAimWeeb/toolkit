@@ -40,6 +40,7 @@ export function App() {
             if (ev.data && typeof ev.data === 'object') {
                 switch (ev.data.type) {
                     case "OFFLINE_READY_STATUS":
+                        console.log("Offline ready status", ev.data.offlineReady);
                         setOfflineReady(ev.data.offlineReady);
                         break;
                 }
@@ -47,7 +48,7 @@ export function App() {
         }
 
         navigator.serviceWorker.addEventListener('message', handleMessages);
-        navigator.serviceWorker.controller?.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' });
+        navigator.serviceWorker.ready.then(sw => sw.active!.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' }));
 
         return () => {
             navigator.serviceWorker.removeEventListener('message', handleMessages);

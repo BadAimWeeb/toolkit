@@ -14,6 +14,7 @@ const manifestSize = self.__WB_MANIFEST.length;
 let precacheCount = 0;
 const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackParam) => {
     if (event.type === 'install') {
+        console.log("DEBUG:", event);
         if (error) {
             sendToClients({
                 type: 'ERROR',
