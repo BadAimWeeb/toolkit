@@ -15,7 +15,7 @@ export function App() {
     const {
         offlineReady: [offlineReady],
         needRefresh: [needRefresh],
-        updateServiceWorker,
+        updateServiceWorker
     } = useRegisterSW({
         onRegisteredSW(swUrl, r) {
             console.log(`Service Worker at: ${swUrl}`)
@@ -29,6 +29,9 @@ export function App() {
         onRegisterError(error) {
             console.log('SW registration error', error)
         },
+        onOfflineReady() {
+            console.log('App is offline-ready')
+        }
     });
 
     const [drawerOpen, setDrawerOpen] = useState(false);
@@ -89,7 +92,7 @@ export function App() {
             </Box>
             <Box sx={{ position: "sticky", bottom: 8, textAlign: "center" }}>
                 <Typography variant='caption' sx={{ overflowWrap: "anywhere" }}>
-                    &copy;&nbsp;2024&nbsp;BadAimWeeb <Box sx={{ wordBreak: "keep-all", display: "inline-block" }}>-&nbsp;Toolkit&nbsp;version&nbsp;{version.version}+{version.commit}&nbsp;-</Box> Offline&nbsp;ready:&nbsp;{offlineReady ? "✅" : "❎"}{needRefresh ? <>&nbsp;<MUILink sx={{ cursor: "pointer" }} onClick={() => updateServiceWorker}>(Update&nbsp;available)</MUILink></> : ""}
+                    &copy;&nbsp;2024&nbsp;BadAimWeeb <Box sx={{ wordBreak: "keep-all", display: "inline-block" }}>-&nbsp;Toolkit&nbsp;version&nbsp;{version.version}+{version.commit}&nbsp;-</Box> Offline&nbsp;ready:&nbsp;{offlineReady ? "✅" : "❎"}{needRefresh ? <>&nbsp;<MUILink sx={{ cursor: "pointer" }} onClick={() => updateServiceWorker(true)}>(Update&nbsp;available)</MUILink></> : ""}
                 </Typography>
             </Box>
         </HashRouter>
