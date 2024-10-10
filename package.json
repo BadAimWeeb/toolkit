@@ -1,0 +1,24 @@
+{
+  "name": "@badaimweeb/toolkit",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/roboto": "^5.1.0",
+    "@mui/icons-material": "^6.1.3",
+    "@mui/material": "^6.1.3",
+    "@mui/styled-engine-sc": "^6.1.3",
+    "preact": "^10.24.1",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.9.1",
+    "typescript": "^5.5.3",
+    "vite": "^5.4.8"
+  }
+}
