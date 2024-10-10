@@ -1,5 +1,5 @@
 import { AppBar, Box, IconButton, Toolbar, Typography, Link as MUILink } from '@mui/material'
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import { HashRouter, Link } from 'react-router-dom'
 
 import MenuIcon from '@mui/icons-material/Menu'
@@ -12,8 +12,9 @@ const reloadSW = '__RELOAD_SW__'
 
 export function App() {
     const version = Version();
+
+    const [offlineReady, setOfflineReady] = useState(false);
     const {
-        offlineReady: [offlineReady],
         needRefresh: [needRefresh],
         updateServiceWorker
     } = useRegisterSW({
@@ -33,6 +34,25 @@ export function App() {
             console.log('App is offline-ready')
         }
     });
+
+    useEffect(() => {
+        function handleMessages(ev: MessageEvent) {
+            if (ev.data && typeof ev.data === 'object') {
+                switch (ev.data.type) {
+                    case "OFFLINE_READY_STATUS":
+                        setOfflineReady(ev.data.offlineReady);
+                        break;
+                }
+            }
+        }
+
+        navigator.serviceWorker.addEventListener('message', handleMessages);
+        navigator.serviceWorker.controller?.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' });
+
+        return () => {
+            navigator.serviceWorker.removeEventListener('message', handleMessages);
+        }
+    }, []);
 
     const [drawerOpen, setDrawerOpen] = useState(false);
 
