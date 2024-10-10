@@ -3,6 +3,8 @@ import type { HandlerDidCompleteCallbackParam } from "workbox-core/types";
 
 declare let self: ServiceWorkerGlobalScope;
 
+const manifest = self.__WB_MANIFEST;
+
 async function sendToClients(message: any) {
     const clients = await self.clients.matchAll();
     for (const client of clients) {
@@ -10,7 +12,7 @@ async function sendToClients(message: any) {
     }
 }
 
-const manifestSize = self.__WB_MANIFEST.length;
+const manifestSize = manifest.length;
 let precacheCount = 0;
 const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackParam) => {
     if (event.type === 'install') {
@@ -35,7 +37,7 @@ const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackPa
 addPlugins([{ handlerDidComplete }]);
 
 // Precache all assets
-precacheAndRoute(self.__WB_MANIFEST);
+precacheAndRoute(manifest);
 
 // Making sure reload button works
 self.addEventListener('message', (event) => {
