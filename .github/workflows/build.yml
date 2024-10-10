@@ -1,0 +1,93 @@
+name: Autobuild
+
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  build:
+    permissions:
+      deployments: write
+      contents: read
+      pages: write
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version: latest
+
+    - name: Install dependencies
+      run: bun i
+
+    - name: Compile frontend
+      run: bun run build
+      env:
+        CI: "false"
+
+    - name: Finalizing artifact
+      run: node ./.github/copyPath.mjs
+
+    - name: Fix permissions
+      run: |
+        chmod -c -R +rX "./dist" | while read line; do
+          echo "::warning title=Invalid file permissions automatically fixed::$line"
+        done
+
+    # - name: Publish to Cloudflare Pages
+    #   uses: cloudflare/pages-action@v1
+    #   with:
+    #     apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    #     accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    #     projectName: ${{ secrets.CLOUDFLARE_PROJECT_NAME }}
+    #     directory: dist/
+    #     # Optional: Enable this if you want to have GitHub Deployments triggered
+    #     gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+    #     wranglerVersion: '3'
+
+    - name: Archive artifact
+      shell: sh
+      
+      run: |
+        tar \
+          --dereference --hard-dereference \
+          --directory "$INPUT_PATH" \
+          -cvf "$RUNNER_TEMP/artifact.tar" \
+          --exclude=.git \
+          --exclude=.github \
+        .
+      env:
+        INPUT_PATH: dist/
+
+    - name: Upload artifact
+      id: upload-artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: github-pages
+        path: ${{ runner.temp }}/artifact.tar
+        retention-days: 1
+        if-no-files-found: error
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4      
+
+      
