@@ -18,14 +18,14 @@ const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackPa
     if (event.type === 'install') {
         console.log("DEBUG:", event, precacheCount, manifestSize);
         if (error) {
-            sendToClients({
+            await sendToClients({
                 type: 'ERROR',
                 e: error.message
             });
         } else {
             precacheCount++;
             if (precacheCount >= manifestSize) {
-                sendToClients({
+                await sendToClients({
                     type: 'OFFLINE_READY_STATUS',
                     offlineReady: true
                 });
