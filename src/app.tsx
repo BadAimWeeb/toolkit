@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu'
 import Version from "virtual:fe-version"
 import { useRegisterSW } from "virtual:pwa-register/preact"
 import { DrawerNavigator } from './component/Drawer'
+import { RoutesDefinition } from './routes'
 // replaced dynamically
 const reloadSW = '__RELOAD_SW__'
 
@@ -60,9 +61,9 @@ export function App() {
 
     const [drawerOpen, setDrawerOpen] = useState(false);
 
-    return <Box sx={{ width: "100vw", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
+    return <Box sx={{ width: "100vw", height: "100vh", display: "flex", flexDirection: "column" }}>
         <HashRouter>
-            <AppBar>
+            <AppBar position='relative'>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -111,13 +112,13 @@ export function App() {
                 </Toolbar>
             </AppBar>
             <DrawerNavigator open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-            <Box sx={{ flexGrow: 1 }}>
-
-            </Box>
-            <Box sx={{ position: "sticky", bottom: 8, textAlign: "center" }}>
-                <Typography variant='caption' sx={{ overflowWrap: "anywhere" }}>
-                    &copy;&nbsp;2024&nbsp;BadAimWeeb <Box sx={{ wordBreak: "keep-all", display: "inline-block" }}>-&nbsp;Toolkit&nbsp;version&nbsp;{version.version}+{version.commit}&nbsp;-</Box> Offline&nbsp;ready:&nbsp;{offlineReady ? "✅" : "❎"}{needRefresh ? <>&nbsp;<MUILink sx={{ cursor: "pointer" }} onClick={() => updateServiceWorker(true)}>(Update&nbsp;available)</MUILink></> : ""}
-                </Typography>
+            <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+                <RoutesDefinition />
+                <Box sx={{ position: "absolute", bottom: 8, textAlign: "center", width: "100%" }}>
+                    <Typography variant='caption' sx={{ overflowWrap: "anywhere" }}>
+                        &copy;&nbsp;2024&nbsp;BadAimWeeb <Box sx={{ wordBreak: "keep-all", display: "inline-block" }}>-&nbsp;Toolkit&nbsp;version&nbsp;{version.version}+{version.commit}&nbsp;-</Box> Offline&nbsp;ready:&nbsp;{offlineReady ? "✅" : "❎"}{needRefresh ? <>&nbsp;<MUILink sx={{ cursor: "pointer" }} onClick={() => updateServiceWorker(true)}>(Update&nbsp;available)</MUILink></> : ""}
+                    </Typography>
+                </Box>
             </Box>
         </HashRouter>
     </Box>
