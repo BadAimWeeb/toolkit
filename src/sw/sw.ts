@@ -16,7 +16,6 @@ const manifestSize = manifest.length;
 let precacheCount = 0;
 const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackParam) => {
     if (event.type === 'install') {
-        console.log("DEBUG:", event, precacheCount, manifestSize);
         if (error) {
             await sendToClients({
                 type: 'ERROR',

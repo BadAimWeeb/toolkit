@@ -31,7 +31,7 @@ export function App() {
             console.log('SW registration error', error)
         },
         onOfflineReady() {
-            console.log('App is offline-ready')
+            setOfflineReady(true);
         }
     });
 
@@ -40,7 +40,6 @@ export function App() {
             if (ev.data && typeof ev.data === 'object') {
                 switch (ev.data.type) {
                     case "OFFLINE_READY_STATUS":
-                        console.log("Offline ready status", ev.data.offlineReady);
                         setOfflineReady(ev.data.offlineReady);
                         break;
                 }
@@ -48,7 +47,11 @@ export function App() {
         }
 
         navigator.serviceWorker.addEventListener('message', handleMessages);
-        navigator.serviceWorker.ready.then(sw => sw.active!.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' }));
+        navigator.serviceWorker.controller?.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' });
+        // Do a query again after 10s to make sure
+        setTimeout(() => {
+            navigator.serviceWorker.controller?.postMessage({ type: 'ASK_OFFLINE_READY_STATUS' });
+        }, 10000);
 
         return () => {
             navigator.serviceWorker.removeEventListener('message', handleMessages);
