@@ -19,11 +19,11 @@ export function V1Component({ updateResult, setCUR }: {
 
     const callUpdateResult = useCallback(() => {
         Generator({ hashAlgo, outputType, x2Pass }, [pass1, pass2]).then(updateResult);
-    }, [hashAlgo, outputType, x2Pass]);
+    }, [hashAlgo, outputType, x2Pass, pass1, pass2]);
 
     useEffect(() => {
         setCUR(callUpdateResult);
-    }, [callUpdateResult, hashAlgo, outputType, x2Pass]);
+    }, [callUpdateResult, hashAlgo, outputType, x2Pass, pass1, pass2]);
 
     return <>
         <PasswordInput password={pass1} setPassword={setPass1} showCopyButton={false} sx={{ mt: 1.5 }} pCount={1} fullWidth />
