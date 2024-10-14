@@ -8,7 +8,7 @@ export function DrawerNavigator({ open, onClose }: { open: boolean, onClose: () 
             <Box sx={{ width: 250 }} role="presentation" onClick={onClose}>
                 <List>
                     <ListItem disablePadding>
-                        <ListItemButton LinkComponent={Link} href="/hashpass">
+                        <ListItemButton component={Link} to="/hashpass">
                             <ListItemIcon>
                                 <TagIcon />
                             </ListItemIcon>
