@@ -1,5 +1,5 @@
 import { Box, Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, Typography } from "@mui/material";
-import { useRef, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { V1Component } from "./v1/component";
 import { PasswordInput } from "./PasswordInput";
 
