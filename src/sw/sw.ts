@@ -1,4 +1,5 @@
 import { precacheAndRoute, addPlugins } from 'workbox-precaching';
+import { getOrCreatePrecacheController } from 'workbox-precaching/utils/getOrCreatePrecacheController';
 import type { HandlerDidCompleteCallbackParam } from "workbox-core/types";
 
 declare let self: ServiceWorkerGlobalScope;
@@ -14,6 +15,9 @@ async function sendToClients(message: any) {
 
 const manifestSize = manifest.length;
 let precacheCount = 0;
+
+const controller = getOrCreatePrecacheController();
+
 const handlerDidComplete = async ({ error, event }: HandlerDidCompleteCallbackParam) => {
     if (event.type === 'install') {
         if (error) {
@@ -46,7 +50,7 @@ self.addEventListener('message', (event) => {
     if (event.data && event.data.type === 'ASK_OFFLINE_READY_STATUS') {
         event.waitUntil(sendToClients({
             type: 'OFFLINE_READY_STATUS',
-            offlineReady: precacheCount >= manifestSize
+            offlineReady: controller.getCachedURLs().length >= manifestSize
         }));
     }
 });
