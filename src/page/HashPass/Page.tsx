@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, Typography } from "@mui/material";
+import { Alert, Box, Button, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import { useState } from "preact/hooks";
 import { V1Component } from "./v1/component";
 import { PasswordInput } from "./PasswordInput";
@@ -19,6 +19,7 @@ export function HashPass() {
             <Typography sx={{ lineHeight: 1.5 }}>
                 This tool uses 2 or more passwords and pass them through a hashing algorithm to generate a single strong password.
             </Typography>
+            <Alert severity="warning" sx={{ mt: 1 }}>DO NOT use a weak/common password to generate as tools may be able to brute-force. Use an initial password (or passphrase is more recommended) that are easy to remember but long to not be easily cracked.<br />USING SYMBOL IS NOT RECOMMENDED.</Alert>
         </Paper>
 
         <Paper elevation={2} sx={{ borderRadius: 2, p: 2, mt: 2 }}>

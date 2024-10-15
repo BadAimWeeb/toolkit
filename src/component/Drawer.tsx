@@ -1,4 +1,5 @@
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import QueryBuilderIcon from "@mui/icons-material/QueryBuilder"
 import TagIcon from '@mui/icons-material/Tag';
 import { Link } from "react-router-dom";
 
@@ -13,6 +14,14 @@ export function DrawerNavigator({ open, onClose }: { open: boolean, onClose: () 
                                 <TagIcon />
                             </ListItemIcon>
                             <ListItemText primary="HashPass" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton component={Link} to="/2fagen">
+                            <ListItemIcon>
+                                <QueryBuilderIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="2FA Generator" />
                         </ListItemButton>
                     </ListItem>
                 </List>

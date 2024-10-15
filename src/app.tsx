@@ -112,9 +112,10 @@ export function App() {
                 </Toolbar>
             </AppBar>
             <DrawerNavigator open={drawerOpen} onClose={() => setDrawerOpen(false)} />
-            <Box sx={{ flexGrow: 1, overflowY: "auto" }}>
+            <Box sx={{ display: "flex", flexDirection: "column", flexGrow: 1, overflowY: "auto" }}>
                 <RoutesDefinition />
-                <Box sx={{ position: "absolute", bottom: 8, textAlign: "center", width: "100%" }}>
+                <Box sx={{ flexGrow: 1 }} />
+                <Box sx={{ mb: 2, textAlign: "center", width: "100%" }}>
                     <Typography variant='caption' sx={{ overflowWrap: "anywhere" }}>
                         &copy;&nbsp;2024&nbsp;BadAimWeeb <Box sx={{ wordBreak: "keep-all", display: "inline-block" }}>-&nbsp;Toolkit&nbsp;version&nbsp;{version.version}+{version.commit}&nbsp;-</Box> Offline&nbsp;ready:&nbsp;{offlineReady ? "✅" : "❎"}{needRefresh ? <>&nbsp;<MUILink sx={{ cursor: "pointer" }} onClick={() => updateServiceWorker(true)}>(Update&nbsp;available)</MUILink></> : ""}
                     </Typography>
